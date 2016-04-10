@@ -29,15 +29,15 @@ No disks:<input type="text" id="txtnodisks">
             let pegx = Math.round((w / 4) * (peg + 1));
             ctx.moveTo(pegx, 110);
             ctx.lineTo(pegx, h);
-            ctx.stroke();
+//            ctx.stroke();
 
         }
 
         function drawdisk(peg, disksize, pos, total) {
             let pegx  = Math.round((w / 4) * (peg + 1));
-            let diskw = (disksize + 1) * 10;
+            let diskw = (disksize + 1) * 12;
             let diskx = pegx - (diskw / 2)
-            let diskh = 10;
+            let diskh = 45;
             let disky = h - (pos * diskh) - diskh;
             ctx.moveTo(pegx, 110);
             ctx.fillStyle = colors[disksize];
