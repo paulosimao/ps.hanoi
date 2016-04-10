@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="index.js"></script>
+</head>
+<body>
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+</canvas>
+<br>
+No disks:<input type="text" id="txtnodisks">
+<button id="btnStart" onclick="runhanoi();">Start</button>
+<script>
+
+    var colors = [];
+
+    function onmove(hctx) {
+        var c         = document.getElementById("myCanvas");
+        var ctx       = c.getContext("2d");
+        var w         = c.width;
+        var h         = c.height;
+        var ndisks    = 10;
+        ctx.fillStyle = "red";
+        ctx.fillRect(0, 0, w, h);
+        ctx.clearRect(0, 0, w, h);
+        ctx.beginPath();
+
+        function drawpeg(peg) {
+            let pegx = Math.round((w / 4) * (peg + 1));
+            ctx.moveTo(pegx, 110);
+            ctx.lineTo(pegx, h);
+            ctx.stroke();
+
+        }
+
+        function drawdisk(peg, disksize, pos, total) {
+            let pegx  = Math.round((w / 4) * (peg + 1));
+            let diskw = (disksize + 1) * 10;
+            let diskx = pegx - (diskw / 2)
+            let diskh = 10;
+            let disky = h - (pos * diskh) - diskh;
+            ctx.moveTo(pegx, 110);
+            ctx.fillStyle = colors[disksize];
+            ctx.fillRect(diskx, disky, diskw, diskh);
+        }
+
+
+        for (let i = 0; i < 3; i++) {
+            drawpeg(i);
+        }
+
+        for (i in hctx.a) {
+            drawdisk(0, hctx.a[i], i, 99);
+        }
+
+        for (i in hctx.b) {
+            drawdisk(1, hctx.b[i], i, 99);
+        }
+
+        for (i in hctx.c) {
+            drawdisk(2, hctx.c[i], i, 99);
+        }
+
+
+        ctx.fillStyle = 'rgb(0,0,0)';
+        ctx.font      = "10px Arial";
+        ctx.fillText(`Start:${hctx.start}`, 10, 10);
+        ctx.fillText(`Now:${hctx.now}`, 10, 24);
+        ctx.fillText(`Dur:${hctx.dur}`, 10, 38);
+        ctx.fillText(`Step:${hctx.step}`, 10, 52);
+        ctx.stroke();
+    }
+
+    function runhanoi() {
+        var no = Math.floor(document.getElementById("txtnodisks").value)
+        colors = [];
+        for (var i = 0; i <= no; i++) {
+            colors.push(getrandcolor());
+        }
+        console.dir('Colors:', colors);
+
+        hanoitowers(no,
+                function (ctx) {
+                    onmove(ctx);
+                    //console.dir(ctx);
+                },
+                function () {
+                    // alert('TEST OVER')
+                }
+        );
+
+    }
+
+    function getrandcolor() {
+
+        var r = Math.round(Math.random() * 255);
+        var g = Math.round(Math.random() * 255);
+        var b = Math.round(Math.random() * 255);
+
+        return `rgb(${r},${g},${b})`;
+    }
+
+</script>
+
+
+</body>
+</html>
